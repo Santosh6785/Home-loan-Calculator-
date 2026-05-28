@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Loan Calc">
+<meta name="theme-color" content="#1B3A6B">
+<link rel="manifest" href="manifest.json">
+<title>Home Loan Calculator</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#EEF2F7;color:#1E293B;min-height:100vh;-webkit-tap-highlight-color:transparent}
+
+/* ── TOPBAR ── */
+.topbar{background:#1B3A6B;padding:14px 16px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.topbar-title{color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
+.topbar-step{color:#93C5FD;font-size:11px;font-weight:600}
+.prog-wrap{display:flex;gap:5px}
+.prog-bar{flex:1;height:4px;border-radius:3px;background:rgba(255,255,255,.22);transition:background .3s}
+.prog-bar.done{background:#D9621E}
+.prog-bar.active{background:#FFA040}
+
+/* ── SCREENS ── */
+.screen{display:none;padding:16px 16px 110px;animation:fadeIn .2s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+.step-title{font-size:19px;font-weight:800;color:#1E293B;margin-bottom:3px}
+.step-sub{font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.5}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.card-hd{padding:11px 16px;font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.07em}
+.card-bd{padding:16px}
+
+/* ── FIELDS ── */
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.field input,.field select{width:100%;padding:13px 14px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:15px;color:#1E293B;background:#fff;-webkit-appearance:none;appearance:none;outline:none;font-family:inherit}
+.field input:focus,.field select:focus{border-color:#1B3A6B;box-shadow:0 0 0 3px rgba(27,58,107,.1)}
+.field .hint{font-size:10px;color:#94A3B8;margin-top:4px;line-height:1.5}
+.sel-wrap{position:relative}
+.sel-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:#64748B;font-size:14px}
+
+/* ── TOGGLE BUTTONS ── */
+.tog-grp{display:flex;gap:8px}
+.tog-btn{flex:1;padding:13px 8px;border:2px solid #E2E8F0;border-radius:10px;background:#fff;color:#64748B;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all .2s;font-family:inherit}
+.tog-btn.active{border-color:#1B3A6B;background:#EFF6FF;color:#1B3A6B}
+
+/* ── PRODUCT GRID ── */
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.prod-card{border:2px solid #E2E8F0;border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;background:#fff;transition:all .2s}
+.prod-card.sel{border-color:#1B3A6B;background:#EFF6FF}
+.prod-card .pi{font-size:30px;margin-bottom:8px}
+.prod-card .pn{font-size:12px;font-weight:700;color:#374151;line-height:1.3}
+.prod-card.sel .pn{color:#1B3A6B}
+
+/* ── SWITCH ── */
+.sw-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #F1F5F9}
+.sw-row:last-child{border-bottom:none}
+.sw-row .sw-lbl{font-size:13px;color:#374151;font-weight:500;flex:1;padding-right:12px}
+.sw-row .sw-sub{font-size:10px;color:#94A3B8;margin-top:2px}
+.sw{position:relative;width:48px;height:28px;flex-shrink:0}
+.sw input{opacity:0;width:0;height:0}
+.sw .sld{position:absolute;inset:0;background:#CBD5E1;border-radius:28px;transition:.3s;cursor:pointer}
+.sw .sld::before{content:'';position:absolute;height:22px;width:22px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input:checked+.sld{background:#1B3A6B}
+input:checked+.sld::before{transform:translateX(20px)}
+
+/* ── BOTTOM NAV ── */
+.bot-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:14px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid #E2E8F0;display:flex;gap:10px;z-index:200;box-shadow:0 -2px 12px rgba(0,0,0,.1)}
+.btn-back{padding:14px;border:2px solid #CBD5E1;border-radius:12px;background:#fff;color:#64748B;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;min-width:90px}
+.btn-next{flex:1;padding:14px;border:none;border-radius:12px;background:#1B3A6B;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-calc{background:#D9621E}
+.btn-next:active{opacity:.85}
+
+/* ── RESULTS ── */
+.hero{border-radius:16px;padding:22px 18px;margin-bottom:14px;color:#fff}
+.hero .h-tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.hero .h-amt{font-size:34px;font-weight:900;letter-spacing:-.02em;line-height:1;margin-bottom:6px}
+.hero .h-status{font-size:12px;opacity:.85;margin-bottom:18px;line-height:1.5}
+.h-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.h-stat{background:rgba(255,255,255,.15);border-radius:10px;padding:10px 6px;text-align:center}
+.h-stat .sl{font-size:9px;opacity:.75;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.h-stat .sv{font-size:13px;font-weight:700}
+.res-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F8FAFC}
+.res-row:last-child{border-bottom:none}
+.res-row .rl{font-size:12px;color:#64748B;flex:1;padding-right:8px;line-height:1.4}
+.res-row .rv{font-size:13px;font-weight:600;color:#0F172A;text-align:right}
+.res-row .rv.big{font-size:17px;font-weight:800;color:#1B3A6B}
+.res-row .rv.acc{color:#D9621E}
+.res-row .rv.red{color:#DC2626}
+.total-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.total-box .tl{font-size:13px;font-weight:700;color:#92400E}
+.total-box .ts{font-size:10px;color:#B45309;margin-top:2px}
+.total-box .tv{font-size:20px;font-weight:900;color:#92400E}
+.fee-note{background:#FFF7ED;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:11px;color:#9A3412;line-height:1.5}
+.err-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;padding:28px 20px;text-align:center;margin-bottom:14px}
+.err-box .ei{font-size:40px;margin-bottom:12px}
+.err-box p{color:#B91C1C;font-size:13px;font-weight:600;line-height:1.6}
+.disc{font-size:10px;color:#94A3B8;text-align:center;line-height:1.8;padding:0 4px 8px}
+.ntc-note{background:#FEF3C7;border:1px solid #FDE68A;border-radius:10px;padding:10px 14px;font-size:11px;color:#92400E;line-height:1.6;margin-top:12px}
+.bsp-lbl{font-size:10px;color:#94A3B8;margin-top:4px}
+
+/* ── INSTALL BANNER ── */
+.install-banner{background:linear-gradient(135deg,#1B3A6B,#2563EB);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.install-banner .ib-icon{font-size:24px;flex-shrink:0}
+.install-banner .ib-text{flex:1}
+.install-banner .ib-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.install-banner .ib-sub{font-size:11px;color:#BAD4FF}
+.install-banner .ib-btn{background:#D9621E;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-row">
+    <div class="topbar-title">🏦 Home Loan Eligibility</div>
+    <div class="topbar-step" id="stepLbl">Step 1 of 3</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar active" id="pb1"></div>
+    <div class="prog-bar" id="pb2"></div>
+    <div class="prog-bar" id="pb3"></div>
+  </div>
+</div>
+
+<!-- ═══ STEP 1: PRODUCT ═══ -->
+<div class="screen active" id="s1">
+  <p class="step-title">Select Product</p>
+  <p class="step-sub">Choose the home loan product to assess eligibility for</p>
+
+  <div class="prod-grid">
+    <div class="prod-card sel" id="pc_homeLoan" onclick="selProd('homeLoan',this)">
+      <div class="pi">🏠</div><div class="pn">Home Loan</div>
+    </div>
+    <div class="prod-card" id="pc_plap" onclick="selProd('plap',this)">
+      <div class="pi">🔑</div><div class="pn">PLAP</div>
+    </div>
+    <div class="prod-card" id="pc_topup5" onclick="selProd('topup5',this)">
+      <div class="pi">💰</div><div class="pn">Top Up ≤ 5 Cr</div>
+    </div>
+    <div class="prod-card" id="pc_topup5p" onclick="selProd('topup5p',this)">
+      <div class="pi">💎</div><div class="pn">Top Up > 5 Cr</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:#D9621E">⚙️ Loan Variant / BSP Sub-Type</div>
+    <div class="card-bd">
+      <div class="field" style="margin-bottom:0">
+        <label>Select Variant</label>
+        <div class="sel-wrap">
+          <select id="bspSel">
+            <option value="0|Standard">Standard — No Add-on</option>
+            <option value="0.50|Maxgain">Maxgain (+50 bps)</option>
+            <option value="0.75|Cred HL Salaried">Cred Home Loan — Salaried (+75 bps)</option>
+            <option value="1.00|Cred HL Non-Sal">Cred Home Loan — Non-Salaried (+100 bps)</option>
+            <option value="0.40|Suraksha">Suraksha Loan (+40 bps)</option>
+          </select>
+        </div>
+        <p class="hint">BSP add-on is applied over the base ROI derived from CIBIL slab</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STEP 2: APPLICANT ═══ -->
+<div class="screen" id="s2">
+  <p class="step-title">Applicant Profile</p>
+  <p class="step-sub">Enter income, age and credit score details</p>
+
+  <div class="card">
+    <div class="card-hd" style="background:#1B3A6B">👤 Employment &amp; Age</div>
+    <div class="card-bd">
+      <div class="field">
+        <label>Employment Type</label>
+        <div class="tog-grp">
+          <button class="tog-btn active" id="empSal" onclick="setEmp('salaried')">🏢 Salaried</button>
+          <button class="tog-btn" id="empNSal" onclick="setEmp('non_salaried')">💼 Self-Employed</button>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Applicant Age (Years)</label>
+        <input type="number" id="ageInp" value="35" min="18" max="65" inputmode="numeric">
+        <p class="hint">Minimum 18 — loan must close before age 70</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:#1B3A6B">📊 CIBIL / Credit Score</div>
+    <div class="card-bd">
+      <div class="sw-row">
+        <div><div class="sw-lbl">New to Credit (NTC)</div><div class="sw-sub">No CIBIL score available</div></div>
+        <label class="sw"><input type="checkbox" id="ntcChk" onchange="toggleNTC()"><span class="sld"></span></label>
+      </div>
+      <div id="cibilBlk" style="margin-top:14px">
+        <div class="field" style="margin-bottom:0">
+          <label>CIBIL Score</label>
+          <input type="number" id="cibilInp" value="760" min="300" max="900" inputmode="numeric">
+          <p class="hint">Range: 300 – 900 &nbsp;|&nbsp; Score ≥ 750 unlocks best ratios for salaried</p>
+        </div>
+      </div>
+      <div id="ntcBlk" style="display:none;margin-top:14px">
+        <div class="field" style="margin-bottom:0">
+          <label>NTC Category</label>
+          <div class="sel-wrap">
+            <select id="ntcCatSel">
+              <option>NTC 151-200</option>
+              <option>NTC 101-150</option>
+              <option>NTC/No Score/-1</option>
+            </select>
+          </div>
+        </div>
+        <div class="ntc-note">ℹ NTC scoring is applicable only for NRI customers and Category I Top-Up loans as per bank policy.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:#1B3A6B">💰 Income</div>
+    <div class="card-bd">
+      <div class="field">
+        <label>Annual Income — Applicant (₹)</label>
+        <input type="number" id="incInp" value="800000" min="0" step="10000" inputmode="numeric" placeholder="e.g. 800000">
+      </div>
+      <div class="sw-row" style="border-bottom:none">
+        <div><div class="sw-lbl">NRI Applicant</div><div class="sw-sub">Enables NRI handling charges if loan ≥ ₹50 L</div></div>
+        <label class="sw"><input type="checkbox" id="nriChk"><span class="sld"></span></label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STEP 3: LOAN + CO-APPLICANT ═══ -->
+<div class="screen" id="s3">
+  <p class="step-title">Loan Requirements</p>
+  <p class="step-sub">Enter desired loan amount, tenure and existing obligations</p>
+
+  <div class="card">
+    <div class="card-hd" style="background:#D9621E">📋 Loan Details</div>
+    <div class="card-bd">
+      <div class="field">
+        <label>Desired Loan Amount (₹)</label>
+        <input type="number" id="loanInp" value="5000000" min="100000" step="100000" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label>Desired Tenure (Years)</label>
+        <input type="number" id="tenureInp" value="20" min="1" max="30" inputmode="numeric">
+        <p class="hint">Max 30 years or till applicant reaches age 70</p>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Existing EMI Obligations (₹ / month)</label>
+        <input type="number" id="emiInp" value="0" min="0" step="1000" inputmode="numeric">
+        <p class="hint">Enter total of all active running loan EMIs (home, car, personal, etc.)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:#4338CA">👥 Co-Applicant</div>
+    <div class="card-bd">
+      <div class="sw-row">
+        <div>
+          <div class="sw-lbl">Add Co-Applicant</div>
+          <div class="sw-sub">Combines income to increase loan eligibility</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="coChk" onchange="toggleCoApp()"><span class="sld"></span></label>
+      </div>
+      <div id="coBlk" style="display:none;margin-top:16px">
+        <div class="field">
+          <label>Co-Applicant Age (Years)</label>
+          <input type="number" id="coAgeInp" value="30" min="18" max="70" inputmode="numeric">
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Annual Income — Co-Applicant (₹)</label>
+          <input type="number" id="coIncInp" value="0" min="0" step="10000" inputmode="numeric">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STEP 4: RESULTS ═══ -->
+<div class="screen" id="s4">
+  <div id="resArea"></div>
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bot-nav" id="botNav">
+  <button class="btn-back" id="btnBack" onclick="goBack()" style="display:none">← Back</button>
+  <button class="btn-next" id="btnNext" onclick="goNext()">Next  →</button>
+</div>
+
+<script>
+const ROI={
+  homeLoan:{bands:[{m:825,r:7.25},{m:780,r:7.60},{m:750,r:7.70},{m:700,r:7.80},{m:650,r:8.25},{m:0,r:8.55}],ntc:{"NTC 151-200":8.35,"NTC 101-150":8.35,"NTC/No Score/-1":7.90}},
+  plap:    {bands:[{m:825,r:8.95},{m:750,r:9.20},{m:700,r:9.30},{m:650,r:10.40},{m:0,r:10.50}],ntc:{"NTC 151-200":10.30,"NTC 101-150":10.40,"NTC/No Score/-1":10.30}},
+  topup5:  {bands:[{m:825,r:7.75},{m:780,r:8.10},{m:750,r:8.20},{m:700,r:8.30},{m:650,r:8.75},{m:0,r:9.05}],ntc:{"NTC 151-200":8.75,"NTC 101-150":8.85,"NTC/No Score/-1":8.40}},
+  topup5p: {bands:[{m:825,r:8.95},{m:780,r:9.20},{m:750,r:9.20},{m:700,r:9.30},{m:650,r:10.40},{m:0,r:10.50}],ntc:{"NTC 151-200":10.30,"NTC 101-150":10.40,"NTC/No Score/-1":10.30}}
+};
+const PNAMES={homeLoan:"Home Loan",plap:"PLAP",topup5:"Top Up ≤ 5 Cr",topup5p:"Top Up > 5 Cr"};
+
+let step=1, prod='homeLoan', emp='salaried';
+
+function getRoi(p,ntc,cat,cibil){
+  const t=ROI[p];
+  if(ntc) return t.ntc[cat]??t.ntc["NTC/No Score/-1"];
+  const c=parseInt(cibil)||0;
+  for(const b of t.bands){if(c>=b.m)return b.r;}
+  return t.bands[t.bands.length-1].r;
+}
+function getEmiNmi(lac,p,sal,cibil){
+  if(p==="plap"){return lac>10?60:lac>5?55:lac>3?50:null;}
+  const c=parseInt(cibil)||0;
+  if(sal&&c>=750)return 75;
+  return lac>10?75:lac>8?65:lac>5?60:lac>3?55:lac>1.2?30:lac>=1.2?20:null;
+}
+function epl(roi,mo){
+  const r=roi/1200;
+  if(!r||mo<=0)return mo>0?1e5/mo:0;
+  return 1e5*r*Math.pow(1+r,mo)/(Math.pow(1+r,mo)-1);
+}
+function inr(n){return"₹"+Math.round(n).toLocaleString("en-IN");}
+function pct(n){return n.toFixed(2)+"% p.a.";}
+function v(id){return document.getElementById(id);}
+function fv(id){return parseFloat(v(id).value)||0;}
+function iv(id){return parseInt(v(id).value)||0;}
+function chk(id){return v(id).checked;}
+
+function selProd(id,el){
+  document.querySelectorAll('.prod-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); prod=id;
+}
+function setEmp(t){
+  emp=t;
+  v('empSal').classList.toggle('active',t==='salaried');
+  v('empNSal').classList.toggle('active',t==='non_salaried');
+}
+function toggleNTC(){
+  const on=chk('ntcChk');
+  v('cibilBlk').style.display=on?'none':'block';
+  v('ntcBlk').style.display=on?'block':'none';
+}
+function toggleCoApp(){
+  v('coBlk').style.display=chk('coChk')?'block':'none';
+}
+
+function goNext(){
+  if(step<3){step++;showStep(step);}
+  else{calc();step=4;showStep(4);}
+}
+function goBack(){
+  if(step===4)step=3; else step--;
+  showStep(step);
+}
+function showStep(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  v('s'+n).classList.add('active');
+  window.scrollTo(0,0);
+
+  if(n<4){
+    ['pb1','pb2','pb3'].forEach((id,i)=>{
+      const el=v(id);
+      el.className='prog-bar'+(i+1<n?' done':i+1===n?' active':'');
+    });
+  } else {
+    ['pb1','pb2','pb3'].forEach(id=>{ v(id).className='prog-bar done'; });
+  }
+
+  v('stepLbl').textContent=n<4?`Step ${n} of 3`:'Results';
+
+  const bk=v('btnBack'), nx=v('btnNext');
+  if(n===1){bk.style.display='none';nx.style.display='block';nx.textContent='Next  →';nx.className='btn-next';}
+  else if(n<4){
+    bk.style.display='block';bk.textContent='← Back';
+    nx.style.display='block';
+    if(n===3){nx.textContent='✓ Calculate';nx.className='btn-next btn-calc';}
+    else{nx.textContent='Next  →';nx.className='btn-next';}
+  }else{
+    bk.style.display='block';bk.textContent='← Edit Inputs';
+    nx.style.display='none';
+  }
+}
+
+function calc(){
+  const ageN  =iv('ageInp');
+  const isNTC =chk('ntcChk');
+  const ntcCat=v('ntcCatSel').value;
+  const cibil =v('cibilInp').value;
+  const totInc=fv('incInp')+(chk('coChk')?fv('coIncInp'):0);
+  const nri   =chk('nriChk');
+  const desAmt=fv('loanInp');
+  const tenure=iv('tenureInp');
+  const exEMI =fv('emiInp');
+  const isSal =emp==='salaried';
+
+  const [bspAddStr,bspName]=v('bspSel').value.split('|');
+  const bspAdd=parseFloat(bspAddStr)||0;
+
+  const effT=Math.min(tenure,70-ageN,30);
+  const area=v('resArea');
+
+  if(effT<=0){area.innerHTML=err("Applicant age is too high. The loan must fully close before the applicant reaches age 70.");return;}
+  if(desAmt<=0){area.innerHTML=err("Please enter a valid desired loan amount.");return;}
+  if(totInc<=0){area.innerHTML=err("Please enter the applicant's annual income to proceed.");return;}
+
+  const incLac =totInc/1e5;
+  const nmi    =totInc/12;
+  const baseRoi=getRoi(prod,isNTC,ntcCat,cibil);
+  const nsAdd  =(!isSal&&!isNTC&&parseInt(cibil)<825)?0.10:0;
+  const finalR =baseRoi+bspAdd+nsAdd;
+  const ratio  =getEmiNmi(incLac,prod,isSal,cibil);
+
+  if(ratio===null){area.innerHTML=err("Income is below the minimum eligibility threshold for this product. For PLAP, minimum annual income is ₹3 Lakhs.");return;}
+
+  const maxEMI=nmi*ratio/100;
+  const avlEMI=maxEMI-exEMI;
+  if(avlEMI<=0){area.innerHTML=err("Existing EMI obligations exceed the maximum permissible limit. The applicant is not eligible for a new loan.");return;}
+
+  const eplV   =epl(finalR,effT*12);
+  const eligAmt=Math.floor((avlEMI/eplV)*1e5/10000)*10000;
+  const appAmt =Math.min(eligAmt,desAmt);
+  const emi    =(appAmt/1e5)*eplV;
+  const full   =eligAmt>=desAmt*0.99;
+
+  let pFee,pNote;
+  if(prod==="plap"){
+    pFee=isSal?Math.min(appAmt*.01,50000):appAmt*.01;
+    pNote=isSal?"1% of loan amount (Max ₹50,000) + GST":"1% of loan amount + GST";
+  }else{
+    pFee=appAmt*.0035;
+    if(isSal){pFee=Math.min(Math.max(pFee,5000),15000);pNote="0.35% of loan (Min ₹5,000 / Max ₹15,000) + GST";}
+    else{pFee=Math.min(Math.max(pFee,5000),18000);pNote="0.35% of loan (Min ₹5,000 / Max ₹18,000) + GST";}
+  }
+  const gst   =pFee*.18;
+  const nriCh =(nri&&appAmt>=5e6)?9500*1.18:0;
+  const total =pFee+gst+nriCh+118;
+
+  const heroGrad=full?'linear-gradient(135deg,#1B3A6B,#1D4ED8)':'linear-gradient(135deg,#7C2D12,#C2410C)';
+  const statusLine=full?'✅ Fully eligible for your desired amount':`⚠️ Desired: ${inr(desAmt)} | Shortfall: ${inr(desAmt-eligAmt)}`;
+
+  area.innerHTML=`
+  <div class="hero" style="background:${heroGrad}">
+    <div class="h-tag">${PNAMES[prod]} — Eligible Loan Amount</div>
+    <div class="h-amt">${inr(eligAmt)}</div>
+    <div class="h-status">${statusLine}</div>
+    <div class="h-stats">
+      <div class="h-stat"><div class="sl">Final ROI</div><div class="sv">${finalR.toFixed(2)}%</div></div>
+      <div class="h-stat"><div class="sl">Monthly EMI</div><div class="sv">${inr(emi)}</div></div>
+      <div class="h-stat"><div class="sl">Tenure</div><div class="sv">${effT} Yrs</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:#0F766E">📊 Rate of Interest Breakdown</div>
+    <div class="card-bd">
+      ${rr("Base ROI (CIBIL / NTC slab)",pct(baseRoi))}
+      ${bspAdd>0?rr("+ BSP Add-on ("+bspName+")","+ "+bspAdd.toFixed(2)+"%","acc"):""}
+      ${nsAdd>0?rr("+ Non-Salaried Add-on","+ 0.10%","acc"):""}
+      ${rr("Final Applicable ROI",pct(finalR),"big")}
+      ${rrl("EMI per ₹1 Lakh","₹ "+eplV.toFixed(2))}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:#6D28D9">🧮 Eligibility Calculation</div>
+    <div class="card-bd">
+      ${rr("Combined Annual Income",inr(totInc))}
+      ${rr("Net Monthly Income (NMI)",inr(nmi))}
+      ${rr("EMI / NMI Ratio Applied",ratio+"%"+(isSal&&!isNTC&&parseInt(cibil)>=750?" ✦":""))}
+      ${rr("Max Permissible Total EMI",inr(maxEMI))}
+      ${rr("Less: Existing EMI Obligations","− "+inr(exEMI),"red")}
+      ${rrl("Available EMI for New Loan",inr(avlEMI),"big")}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd" style="background:#9A3412">💳 Fees &amp; Charges</div>
+    <div class="card-bd">
+      <div class="fee-note"><strong>Processing Basis:</strong> ${pNote}</div>
+      ${rr("Processing Fee",inr(pFee))}
+      ${rr("GST @ 18%",inr(gst))}
+      ${nriCh>0?rr("NRI Document Handling + GST",inr(nriCh),"acc"):""}
+      ${rrl("CERSAI Registration + GST","₹ 118")}
+      <div class="total-box">
+        <div><div class="tl">Total Upfront Cost (Est.)</div><div class="ts">Processing + GST + CERSAI</div></div>
+        <div class="tv">${inr(total)}</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="disc">
+    * For reference only. Actual eligibility subject to bank credit appraisal &amp; underwriting policies.<br>
+    Stamp duty, registration &amp; other mortgage charges excluded — vary state-wise.
+  </p>`;
+}
+
+function rr(l,val,cls=''){return`<div class="res-row"><span class="rl">${l}</span><span class="rv ${cls}">${val}</span></div>`;}
+function rrl(l,val,cls=''){return`<div class="res-row" style="border:none"><span class="rl">${l}</span><span class="rv ${cls}">${val}</span></div>`;}
+function err(msg){return`<div class="err-box"><div class="ei">⚠️</div><p>${msg}</p></div>`;}
+
+if('serviceWorker'in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
