@@ -77,6 +77,8 @@ input:checked+.sld::before{transform:translateX(20px)}
 .btn-next{flex:1;padding:14px;border:none;border-radius:12px;background:#1B3A6B;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
 .btn-calc{background:#D9621E}
 .btn-next:active{opacity:.85}
+.btn-print{width:100%;padding:13px;border:2px solid #1B3A6B;border-radius:12px;background:#fff;color:#1B3A6B;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px;margin-bottom:12px;text-align:center}
+.btn-print:active{background:#EFF6FF}
 
 /* ── RESULTS ── */
 .hero{border-radius:16px;padding:22px 18px;margin-bottom:14px;color:#fff}
@@ -94,17 +96,34 @@ input:checked+.sld::before{transform:translateX(20px)}
 .res-row .rv.big{font-size:17px;font-weight:800;color:#1B3A6B}
 .res-row .rv.acc{color:#D9621E}
 .res-row .rv.red{color:#DC2626}
+.res-row .rv.grn{color:#059669}
 .total-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:12px}
 .total-box .tl{font-size:13px;font-weight:700;color:#92400E}
 .total-box .ts{font-size:10px;color:#B45309;margin-top:2px}
 .total-box .tv{font-size:20px;font-weight:900;color:#92400E}
 .fee-note{background:#FFF7ED;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:11px;color:#9A3412;line-height:1.5}
+.prod-note{background:#EFF6FF;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:11px;color:#1E40AF;line-height:1.5}
+.mor-note{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:10px 14px;font-size:11px;color:#166534;line-height:1.6;margin-bottom:12px}
 .err-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;padding:28px 20px;text-align:center;margin-bottom:14px}
 .err-box .ei{font-size:40px;margin-bottom:12px}
 .err-box p{color:#B91C1C;font-size:13px;font-weight:600;line-height:1.6}
 .disc{font-size:10px;color:#94A3B8;text-align:center;line-height:1.8;padding:0 4px 8px}
 .ntc-note{background:#FEF3C7;border:1px solid #FDE68A;border-radius:10px;padding:10px 14px;font-size:11px;color:#92400E;line-height:1.6;margin-top:12px}
 .bsp-lbl{font-size:10px;color:#94A3B8;margin-top:4px}
+
+/* ── REPAYMENT SCHEDULE ── */
+.chart-legend{display:flex;gap:16px;margin-bottom:10px;font-size:11px;color:#64748B}
+.chart-legend span{display:flex;align-items:center;gap:5px}
+.chart-legend .dot{width:11px;height:11px;border-radius:2px;display:inline-block;flex-shrink:0}
+.chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:4px}
+.sched-toggle{width:100%;padding:10px 16px;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:10px;font-size:12px;font-weight:600;color:#64748B;cursor:pointer;margin-top:14px;font-family:inherit;text-align:center}
+.sched-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:12px}
+.sched-table th{background:#F1F5F9;color:#64748B;font-weight:700;padding:8px 7px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid #E2E8F0}
+.sched-table th:first-child{text-align:left}
+.sched-table td{padding:7px 7px;text-align:right;border-bottom:1px solid #F1F5F9;color:#374151;font-size:11px}
+.sched-table td:first-child{text-align:left;font-weight:600;color:#1E293B}
+.sched-table tr.mor-row td{color:#065F46;background:#F0FDF4;font-style:italic}
+.sched-table tr.total-row td{font-weight:700;color:#1B3A6B;background:#F0F9FF;border-top:2px solid #BFDBFE}
 
 /* ── INSTALL BANNER ── */
 .install-banner{background:linear-gradient(135deg,#1B3A6B,#2563EB);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
@@ -113,6 +132,19 @@ input:checked+.sld::before{transform:translateX(20px)}
 .install-banner .ib-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
 .install-banner .ib-sub{font-size:11px;color:#BAD4FF}
 .install-banner .ib-btn{background:#D9621E;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff!important}
+  .topbar,.bot-nav,.btn-print,.sched-toggle,.chart-scroll,.chart-legend{display:none!important}
+  .screen{display:none!important;padding:0!important}
+  #s4{display:block!important;padding:10px!important}
+  .hero,.card-hd{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  *{box-shadow:none!important}
+  .card{border:1px solid #E2E8F0!important;margin-bottom:8px!important;break-inside:avoid}
+  #schedTable{display:block!important}
+  @page{margin:10mm;size:A4 portrait}
+}
 </style>
 </head>
 <body>
@@ -148,6 +180,12 @@ input:checked+.sld::before{transform:translateX(20px)}
     <div class="prod-card" id="pc_topup5p" onclick="selProd('topup5p',this)">
       <div class="pi">💎</div><div class="pn">Top Up > 5 Cr</div>
     </div>
+    <div class="prod-card" id="pc_realityHL" onclick="selProd('realityHL',this)">
+      <div class="pi">🏗️</div><div class="pn">Reality Home Loan</div>
+    </div>
+    <div class="prod-card" id="pc_comboHL" onclick="selProd('comboHL',this)">
+      <div class="pi">🔗</div><div class="pn">Combo Home Loan</div>
+    </div>
   </div>
 
   <div class="card">
@@ -159,8 +197,8 @@ input:checked+.sld::before{transform:translateX(20px)}
           <select id="bspSel">
             <option value="0|Standard">Standard — No Add-on</option>
             <option value="0.50|Maxgain">Maxgain (+50 bps)</option>
-            <option value="0.75|Cred HL Salaried">CRE Home Loan — Salaried (+75 bps)</option>
-            <option value="1.00|Cred HL Non-Sal">CRE Home Loan — Non-Salaried (+100 bps)</option>
+            <option value="0.75|CRE HL Salaried">CRE Home Loan — Salaried (+75 bps)</option>
+            <option value="1.00|CRE HL Non-Sal">CRE Home Loan — Non-Salaried (+100 bps)</option>
             <option value="0.40|Suraksha">Suraksha Loan (+40 bps)</option>
           </select>
         </div>
@@ -263,6 +301,38 @@ input:checked+.sld::before{transform:translateX(20px)}
     </div>
   </div>
 
+  <!-- MORATORIUM -->
+  <div class="card">
+    <div class="card-hd" style="background:#0F766E">⏳ Moratorium Period</div>
+    <div class="card-bd">
+      <div class="sw-row">
+        <div>
+          <div class="sw-lbl">Enable Moratorium</div>
+          <div class="sw-sub">Pre-EMI period before regular repayment starts</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="morChk" onchange="toggleMor()"><span class="sld"></span></label>
+      </div>
+      <div id="morBlk" style="display:none;margin-top:16px">
+        <div class="field">
+          <label>Moratorium Period (Months)</label>
+          <input type="number" id="morMonths" value="12" min="1" max="36" inputmode="numeric">
+          <p class="hint">Typically 1 – 36 months (common for under-construction properties)</p>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Interest Repayment during Moratorium</label>
+          <div class="tog-grp">
+            <button class="tog-btn active" id="morIntYes" onclick="setMorInt(true)">💸 Yes — Pay Interest</button>
+            <button class="tog-btn" id="morIntNo" onclick="setMorInt(false)">📈 No — Capitalise</button>
+          </div>
+          <p class="hint">
+            <strong>Pay Interest:</strong> Monthly interest-only payments during pre-EMI period<br>
+            <strong>Capitalise:</strong> Interest is added to principal; higher EMI begins after moratorium
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-hd" style="background:#4338CA">👥 Co-Applicant</div>
     <div class="card-bd">
@@ -300,14 +370,16 @@ input:checked+.sld::before{transform:translateX(20px)}
 
 <script>
 const ROI={
-  homeLoan:{bands:[{m:825,r:7.25},{m:780,r:7.60},{m:750,r:7.70},{m:700,r:7.80},{m:650,r:8.25},{m:0,r:8.55}],ntc:{"NTC 151-200":8.35,"NTC 101-150":8.35,"NTC/No Score/-1":7.90}},
-  plap:    {bands:[{m:825,r:8.95},{m:750,r:9.20},{m:700,r:9.30},{m:650,r:10.40},{m:0,r:10.50}],ntc:{"NTC 151-200":10.30,"NTC 101-150":10.40,"NTC/No Score/-1":10.30}},
-  topup5:  {bands:[{m:825,r:7.75},{m:780,r:8.10},{m:750,r:8.20},{m:700,r:8.30},{m:650,r:8.75},{m:0,r:9.05}],ntc:{"NTC 151-200":8.75,"NTC 101-150":8.85,"NTC/No Score/-1":8.40}},
-  topup5p: {bands:[{m:825,r:8.95},{m:780,r:9.20},{m:750,r:9.20},{m:700,r:9.30},{m:650,r:10.40},{m:0,r:10.50}],ntc:{"NTC 151-200":10.30,"NTC 101-150":10.40,"NTC/No Score/-1":10.30}}
+  homeLoan: {bands:[{m:825,r:7.25},{m:780,r:7.60},{m:750,r:7.70},{m:700,r:7.80},{m:650,r:8.25},{m:0,r:8.55}], ntc:{"NTC 151-200":8.35,"NTC 101-150":8.35,"NTC/No Score/-1":7.90}},
+  plap:     {bands:[{m:825,r:8.95},{m:750,r:9.20},{m:700,r:9.30},{m:650,r:10.40},{m:0,r:10.50}], ntc:{"NTC 151-200":10.30,"NTC 101-150":10.40,"NTC/No Score/-1":10.30}},
+  topup5:   {bands:[{m:825,r:7.75},{m:780,r:8.10},{m:750,r:8.20},{m:700,r:8.30},{m:650,r:8.75},{m:0,r:9.05}], ntc:{"NTC 151-200":8.75,"NTC 101-150":8.85,"NTC/No Score/-1":8.40}},
+  topup5p:  {bands:[{m:825,r:8.95},{m:780,r:9.20},{m:750,r:9.20},{m:700,r:9.30},{m:650,r:10.40},{m:0,r:10.50}], ntc:{"NTC 151-200":10.30,"NTC 101-150":10.40,"NTC/No Score/-1":10.30}},
+  realityHL:{bands:[{m:825,r:8.05},{m:780,r:8.30},{m:750,r:8.40},{m:700,r:8.50},{m:650,r:9.00},{m:0,r:9.05}], ntc:{"NTC 151-200":8.85,"NTC 101-150":8.85,"NTC/No Score/-1":8.40}},
+  comboHL:  {bands:[{m:825,r:7.50},{m:780,r:7.85},{m:750,r:7.95},{m:700,r:8.05},{m:650,r:8.50},{m:0,r:8.80}], ntc:{"NTC 151-200":8.60,"NTC 101-150":8.60,"NTC/No Score/-1":8.15}}
 };
-const PNAMES={homeLoan:"Home Loan",plap:"PLAP",topup5:"Top Up ≤ 5 Cr",topup5p:"Top Up > 5 Cr"};
+const PNAMES={homeLoan:"Home Loan",plap:"PLAP",topup5:"Top Up ≤ 5 Cr",topup5p:"Top Up > 5 Cr",realityHL:"Reality Home Loan",comboHL:"Combo Home Loan"};
 
-let step=1, prod='homeLoan', emp='salaried';
+let step=1, prod='homeLoan', emp='salaried', morInterestRepay=true;
 
 function getRoi(p,ntc,cat,cibil){
   const t=ROI[p];
@@ -328,6 +400,7 @@ function epl(roi,mo){
   return 1e5*r*Math.pow(1+r,mo)/(Math.pow(1+r,mo)-1);
 }
 function inr(n){return"₹"+Math.round(n).toLocaleString("en-IN");}
+function lacStr(n){n=Math.max(0,Math.round(n));if(n>=1e7)return"₹"+(n/1e7).toFixed(2)+"Cr";return"₹"+(n/1e5).toFixed(2)+"L";}
 function pct(n){return n.toFixed(2)+"% p.a.";}
 function v(id){return document.getElementById(id);}
 function fv(id){return parseFloat(v(id).value)||0;}
@@ -348,8 +421,19 @@ function toggleNTC(){
   v('cibilBlk').style.display=on?'none':'block';
   v('ntcBlk').style.display=on?'block':'none';
 }
-function toggleCoApp(){
-  v('coBlk').style.display=chk('coChk')?'block':'none';
+function toggleCoApp(){ v('coBlk').style.display=chk('coChk')?'block':'none'; }
+function toggleMor(){ v('morBlk').style.display=chk('morChk')?'block':'none'; }
+function setMorInt(val){
+  morInterestRepay=val;
+  v('morIntYes').classList.toggle('active',val);
+  v('morIntNo').classList.toggle('active',!val);
+}
+function toggleSchedule(){
+  const tbl=v('schedTable'), btn=v('schedBtn');
+  if(!tbl)return;
+  const show=tbl.style.display==='none';
+  tbl.style.display=show?'block':'none';
+  btn.textContent=show?'📋 Hide Full Schedule ▴':'📋 View Full Year-by-Year Schedule ▾';
 }
 
 function goNext(){
@@ -364,7 +448,6 @@ function showStep(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   v('s'+n).classList.add('active');
   window.scrollTo(0,0);
-
   if(n<4){
     ['pb1','pb2','pb3'].forEach((id,i)=>{
       const el=v(id);
@@ -373,9 +456,7 @@ function showStep(n){
   } else {
     ['pb1','pb2','pb3'].forEach(id=>{ v(id).className='prog-bar done'; });
   }
-
   v('stepLbl').textContent=n<4?`Step ${n} of 3`:'Results';
-
   const bk=v('btnBack'), nx=v('btnNext');
   if(n===1){bk.style.display='none';nx.style.display='block';nx.textContent='Next  →';nx.className='btn-next';}
   else if(n<4){
@@ -389,6 +470,84 @@ function showStep(n){
   }
 }
 
+/* ── AMORTIZATION ENGINE ── */
+function buildAmort(principal,roi,tenureMonths,morMo,morPayInt){
+  const r=roi/1200;
+  let bal=principal;
+  const rows=[];
+  let totalInt=0;
+
+  if(morMo>0){
+    if(morPayInt){
+      const preEmiMo=bal*r;
+      const preEmiTot=preEmiMo*morMo;
+      rows.push({period:'Pre-EMI ('+morMo+'m)',opening:bal,principal:0,interest:preEmiTot,closing:bal,isMor:true});
+      totalInt+=preEmiTot;
+    } else {
+      const capInt=bal*(Math.pow(1+r,morMo)-1);
+      rows.push({period:'Moratorium ('+morMo+'m)',opening:bal,principal:0,interest:capInt,closing:bal+capInt,isMor:true,isCap:true});
+      totalInt+=capInt;
+      bal+=capInt;
+    }
+  }
+
+  if(tenureMonths<=0||bal<1){return{rows,totalInt,totalCost:principal+totalInt};}
+  const emi=bal*r*Math.pow(1+r,tenureMonths)/(Math.pow(1+r,tenureMonths)-1);
+  let yo=bal, yp=0, yi=0, yr=1;
+
+  for(let m=1;m<=tenureMonths;m++){
+    const ip=bal*r;
+    const pp=Math.min(emi-ip,bal);
+    bal=Math.max(0,bal-pp);
+    yp+=pp; yi+=ip; totalInt+=ip;
+    if(m%12===0||m===tenureMonths){
+      rows.push({period:'Year '+yr,opening:yo,principal:yp,interest:yi,closing:bal,isMor:false});
+      yo=bal; yp=0; yi=0; yr++;
+    }
+  }
+  return{rows,totalInt,totalCost:principal+totalInt};
+}
+
+/* ── CHART ── */
+function drawChart(rows){
+  const canvas=v('repayChart');
+  if(!canvas||!canvas.getContext)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const PAD={t:14,r:8,b:28,l:46};
+  const cW=W-PAD.l-PAD.r, cH=H-PAD.t-PAD.b;
+  const maxY=Math.max(...rows.map(d=>d.principal+d.interest),1);
+  const n=rows.length;
+  const slotW=cW/n;
+  const bW=Math.max(4,slotW*0.65);
+
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#E2E8F0'; ctx.lineWidth=0.5;
+  for(let i=0;i<=4;i++){
+    const y=PAD.t+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
+    const val=(i/4)*maxY;
+    ctx.fillStyle='#94A3B8'; ctx.font='9px sans-serif'; ctx.textAlign='right';
+    const lbl=val>=1e7?(val/1e7).toFixed(1)+'Cr':val>=1e5?(val/1e5).toFixed(0)+'L':'0';
+    ctx.fillText(lbl,PAD.l-3,y+3);
+  }
+
+  rows.forEach((d,i)=>{
+    const x=PAD.l+i*slotW+(slotW-bW)/2;
+    const base=PAD.t+cH;
+    const intH=Math.round((d.interest/maxY)*cH);
+    const priH=Math.round((d.principal/maxY)*cH);
+
+    if(intH>0){ctx.fillStyle=d.isMor?'#D9621E':'#F97316';ctx.fillRect(x,base-intH,bW,intH);}
+    if(priH>0){ctx.fillStyle='#1B3A6B';ctx.fillRect(x,base-intH-priH,bW,priH);}
+
+    const lbl=d.period.replace('Year ','Y').replace('Pre-EMI','PreE').replace('Moratorium','Mor');
+    ctx.fillStyle='#64748B'; ctx.font='8px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(lbl,x+bW/2,H-PAD.b+11);
+  });
+}
+
+/* ── MAIN CALC ── */
 function calc(){
   const ageN  =iv('ageInp');
   const isNTC =chk('ntcChk');
@@ -401,7 +560,11 @@ function calc(){
   const exEMI =fv('emiInp');
   const isSal =emp==='salaried';
 
-  const [bspAddStr,bspName]=v('bspSel').value.split('|');
+  const hasMor =chk('morChk');
+  const morMo  =hasMor?Math.max(1,Math.min(36,iv('morMonths'))):0;
+  const morPayInt=morInterestRepay;
+
+  const[bspAddStr,bspName]=v('bspSel').value.split('|');
   const bspAdd=parseFloat(bspAddStr)||0;
 
   const effT=Math.min(tenure,70-ageN,30);
@@ -411,12 +574,12 @@ function calc(){
   if(desAmt<=0){area.innerHTML=err("Please enter a valid desired loan amount.");return;}
   if(totInc<=0){area.innerHTML=err("Please enter the applicant's annual income to proceed.");return;}
 
-  const incLac =totInc/1e5;
-  const nmi    =totInc/12;
+  const incLac=totInc/1e5;
+  const nmi   =totInc/12;
   const baseRoi=getRoi(prod,isNTC,ntcCat,cibil);
-  const nsAdd  =(!isSal&&!isNTC&&parseInt(cibil)<825)?0.10:0;
-  const finalR =baseRoi+bspAdd+nsAdd;
-  const ratio  =getEmiNmi(incLac,prod,isSal,cibil);
+  const nsAdd =(!isSal&&!isNTC&&parseInt(cibil)<825)?0.10:0;
+  const finalR=baseRoi+bspAdd+nsAdd;
+  const ratio =getEmiNmi(incLac,prod,isSal,cibil);
 
   if(ratio===null){area.innerHTML=err("Income is below the minimum eligibility threshold for this product. For PLAP, minimum annual income is ₹3 Lakhs.");return;}
 
@@ -424,17 +587,32 @@ function calc(){
   const avlEMI=maxEMI-exEMI;
   if(avlEMI<=0){area.innerHTML=err("Existing EMI obligations exceed the maximum permissible limit. The applicant is not eligible for a new loan.");return;}
 
-  const eplV   =epl(finalR,effT*12);
-  const eligAmt=Math.floor((avlEMI/eplV)*1e5/10000)*10000;
-  const appAmt =Math.min(eligAmt,desAmt);
-  const emi    =(appAmt/1e5)*eplV;
-  const full   =eligAmt>=desAmt*0.99;
+  const eplV=epl(finalR,effT*12);
+
+  let eligAmt;
+  if(hasMor&&morMo>0&&!morPayInt){
+    const r=finalR/1200;
+    const capF=Math.pow(1+r,morMo);
+    eligAmt=Math.floor((avlEMI/(capF*eplV))*1e5/10000)*10000;
+  } else {
+    eligAmt=Math.floor((avlEMI/eplV)*1e5/10000)*10000;
+  }
+
+  const appAmt=Math.min(eligAmt,desAmt);
+  const full  =eligAmt>=desAmt*0.99;
+
+  let preEmiMo=0, capAmt=appAmt;
+  if(hasMor&&morMo>0){
+    if(morPayInt){ preEmiMo=appAmt*(finalR/1200); }
+    else{ capAmt=appAmt*Math.pow(1+finalR/1200,morMo); }
+  }
+  const emi=(hasMor&&morMo>0&&!morPayInt)?(capAmt/1e5)*eplV:(appAmt/1e5)*eplV;
 
   let pFee,pNote;
   if(prod==="plap"){
     pFee=isSal?Math.min(appAmt*.01,50000):appAmt*.01;
     pNote=isSal?"1% of loan amount (Max ₹50,000) + GST":"1% of loan amount + GST";
-  }else{
+  } else {
     pFee=appAmt*.0035;
     if(isSal){pFee=Math.min(Math.max(pFee,5000),15000);pNote="0.35% of loan (Min ₹5,000 / Max ₹15,000) + GST";}
     else{pFee=Math.min(Math.max(pFee,5000),18000);pNote="0.35% of loan (Min ₹5,000 / Max ₹18,000) + GST";}
@@ -443,9 +621,30 @@ function calc(){
   const nriCh =(nri&&appAmt>=5e6)?9500*1.18:0;
   const total =pFee+gst+nriCh+118;
 
+  const amort =buildAmort(appAmt,finalR,effT*12,morMo,morPayInt);
+  const preEmiTotal=hasMor&&morMo>0&&morPayInt?preEmiMo*morMo:0;
+  const grandTotalInt=amort.totalInt;
+  const grandCost=appAmt+grandTotalInt;
+
   const heroGrad=full?'linear-gradient(135deg,#1B3A6B,#1D4ED8)':'linear-gradient(135deg,#7C2D12,#C2410C)';
   const statusLine=full?'✅ Fully eligible for your desired amount':`⚠️ Desired: ${inr(desAmt)} | Shortfall: ${inr(desAmt-eligAmt)}`;
 
+  const prodNotes={
+    realityHL:'<div class="prod-note">ℹ️ <strong>Reality Home Loan</strong> is for purchase of residential plot/land. Construction must commence within 2 years of land purchase. Max tenure and LTV may differ from standard HL — verify with bank policy.</div>',
+    comboHL:'<div class="prod-note">ℹ️ <strong>Combo Home Loan</strong> combines a term home loan with an overdraft facility. The credit limit is typically linked to the outstanding principal. Subject to individual bank sanction norms.</div>'
+  };
+
+  /* ── SCHEDULE TABLE ROWS ── */
+  const tableRows=amort.rows.map(r=>`
+    <tr class="${r.isMor?'mor-row':''}">
+      <td>${r.period}</td>
+      <td>${lacStr(r.opening)}</td>
+      <td>${r.isMor&&!r.isCap?'—':lacStr(r.principal)}</td>
+      <td>${lacStr(r.interest)}</td>
+      <td>${lacStr(r.closing)}</td>
+    </tr>`).join('');
+
+  /* ── RENDER ── */
   area.innerHTML=`
   <div class="hero" style="background:${heroGrad}">
     <div class="h-tag">${PNAMES[prod]} — Eligible Loan Amount</div>
@@ -457,6 +656,28 @@ function calc(){
       <div class="h-stat"><div class="sl">Tenure</div><div class="sv">${effT} Yrs</div></div>
     </div>
   </div>
+
+  ${prodNotes[prod]||''}
+
+  ${hasMor&&morMo>0?`
+  <div class="card">
+    <div class="card-hd" style="background:#065F46">⏳ Moratorium Details</div>
+    <div class="card-bd">
+      <div class="mor-note">
+        <strong>Moratorium Period:</strong> ${morMo} months<br>
+        <strong>Mode:</strong> ${morPayInt?'Interest-only repayment during pre-EMI period':'Interest capitalised — added to outstanding principal'}
+      </div>
+      ${morPayInt?`
+        ${rr('Monthly Pre-EMI Interest',inr(preEmiMo),'acc')}
+        ${rr('Total Pre-EMI Outflow ('+morMo+' months)',inr(preEmiMo*morMo),'acc')}
+        ${rrl('Regular EMI commences after moratorium',inr(emi),'big')}
+      `:`
+        ${rr('Loan Amount at Disbursement',inr(appAmt))}
+        ${rr('Capitalised Outstanding after Moratorium',inr(capAmt),'acc')}
+        ${rrl('Adjusted Monthly EMI (on capitalised amount)',inr(emi),'big')}
+      `}
+    </div>
+  </div>`:''}
 
   <div class="card">
     <div class="card-hd" style="background:#0F766E">📊 Rate of Interest Breakdown</div>
@@ -496,10 +717,57 @@ function calc(){
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-hd" style="background:#047857">📅 Repayment Schedule</div>
+    <div class="card-bd">
+      ${rr("Loan Principal Disbursed",inr(appAmt))}
+      ${hasMor&&morMo>0&&morPayInt?rr("Total Pre-EMI Interest ("+morMo+"m)",inr(preEmiTotal),"acc"):""}
+      ${rr("Total EMI Interest ("+effT+" Yrs)",inr(amort.totalInt-(hasMor&&morMo>0&&morPayInt?preEmiTotal:0)),"acc")}
+      ${rrl("Grand Total Loan Cost",inr(grandCost),"big")}
+
+      <div class="chart-legend" style="margin-top:14px">
+        <span><span class="dot" style="background:#1B3A6B"></span>Principal</span>
+        <span><span class="dot" style="background:#F97316"></span>Interest</span>
+      </div>
+      <div class="chart-scroll">
+        <canvas id="repayChart" height="180" style="display:block"></canvas>
+      </div>
+
+      <button class="sched-toggle" id="schedBtn" onclick="toggleSchedule()">📋 View Full Year-by-Year Schedule ▾</button>
+      <div id="schedTable" style="display:none;overflow-x:auto">
+        <table class="sched-table">
+          <thead>
+            <tr>
+              <th>Period</th><th>Opening</th><th>Principal</th><th>Interest</th><th>Closing</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+            <tr class="total-row">
+              <td>TOTAL</td>
+              <td>—</td>
+              <td>${lacStr(appAmt)}</td>
+              <td>${lacStr(grandTotalInt)}</td>
+              <td>₹ 0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+
   <p class="disc">
     * For reference only. Actual eligibility subject to bank credit appraisal &amp; underwriting policies.<br>
     Stamp duty, registration &amp; other mortgage charges excluded — vary state-wise.
   </p>`;
+
+  const canvas=v('repayChart');
+  if(canvas){
+    canvas.width=Math.max(200,Math.max(amort.rows.length*28,window.innerWidth-64));
+    drawChart(amort.rows);
+  }
 }
 
 function rr(l,val,cls=''){return`<div class="res-row"><span class="rl">${l}</span><span class="rv ${cls}">${val}</span></div>`;}
