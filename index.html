@@ -690,11 +690,11 @@ function calc(){
   </div>
 
   <div class="card">
-    <div class="card-hd" style="background:#6D28D9">🧲 Eligibility Calculation</div>
+    <div class="card-hd" style="background:#6D28D9">🧮 Eligibility Calculation</div>
     <div class="card-bd">
       ${rr("Combined Annual Income",inr(totInc))}
       ${rr("Net Monthly Income (NMI)",inr(nmi))}
-      ${rr("EMI / NMI Ratio Applied",ratio+"%"+(isSal&&!isNTC&&parseInt(cibil)>=750&&incLac>10?" ❖b+",""))}
+      ${rr("EMI / NMI Ratio Applied",ratio+"%"+(isSal&&!isNTC&&parseInt(cibil)>=750&&incLac>10?" ✦":""))}
       ${rr("Max Permissible Total EMI",inr(maxEMI))}
       ${rr("Less: Existing EMI Obligations","− "+inr(exEMI),"red")}
       ${rrl("Available EMI for New Loan",inr(avlEMI),"big")}
