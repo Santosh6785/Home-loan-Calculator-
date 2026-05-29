@@ -391,7 +391,7 @@ function getRoi(p,ntc,cat,cibil){
 function getEmiNmi(lac,p,sal,cibil){
   if(p==="plap"){return lac>10?60:lac>5?55:lac>3?50:null;}
   const c=parseInt(cibil)||0;
-  if(sal&&c>=750&&lac>10)return 75;   // Salaried CIBIL≥50 AND income>10L only
+  if(sal&&c>=750&&lac>10)return 75;   // Salaried CIBIL≥750 AND income>10L only
   if(!sal&&lac>10)return 70;           // Non-salaried income>10L
   return lac>8?65:lac>5?60:lac>3?55:lac>1.2?30:lac>=1.2?20:null;
 }
