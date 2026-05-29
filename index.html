@@ -391,8 +391,9 @@ function getRoi(p,ntc,cat,cibil){
 function getEmiNmi(lac,p,sal,cibil){
   if(p==="plap"){return lac>10?60:lac>5?55:lac>3?50:null;}
   const c=parseInt(cibil)||0;
-  if(sal&&c>=750)return 75;
-  return lac>10?75:lac>8?65:lac>5?60:lac>3?55:lac>1.2?30:lac>=1.2?20:null;
+  if(sal&&c>=750&&lac>10)return 75;   // Salaried CIBIL>=750 AND income>10L only
+  if(!sal&&lac>10)return 70;           // Non-salaried income>10L
+  return lac>8?65:lac>5?60:lac>3?55:lac>1.2?30:lac>=1.2?20:null;
 }
 function epl(roi,mo){
   const r=roi/1200;
@@ -634,7 +635,6 @@ function calc(){
     comboHL:'<div class="prod-note">ℹ️ <strong>Combo Home Loan</strong> combines a term home loan with an overdraft facility. The credit limit is typically linked to the outstanding principal. Subject to individual bank sanction norms.</div>'
   };
 
-  /* ── SCHEDULE TABLE ROWS ── */
   const tableRows=amort.rows.map(r=>`
     <tr class="${r.isMor?'mor-row':''}">
       <td>${r.period}</td>
@@ -644,7 +644,6 @@ function calc(){
       <td>${lacStr(r.closing)}</td>
     </tr>`).join('');
 
-  /* ── RENDER ── */
   area.innerHTML=`
   <div class="hero" style="background:${heroGrad}">
     <div class="h-tag">${PNAMES[prod]} — Eligible Loan Amount</div>
@@ -695,7 +694,7 @@ function calc(){
     <div class="card-bd">
       ${rr("Combined Annual Income",inr(totInc))}
       ${rr("Net Monthly Income (NMI)",inr(nmi))}
-      ${rr("EMI / NMI Ratio Applied",ratio+"%"+(isSal&&!isNTC&&parseInt(cibil)>=750?" ✦":""))}
+      ${rr("EMI / NMI Ratio Applied",ratio+"%"+(isSal&&!isNTC&&parseInt(cibil)>=750&&incLac>10?" ♦":"convince"))}
       ${rr("Max Permissible Total EMI",inr(maxEMI))}
       ${rr("Less: Existing EMI Obligations","− "+inr(exEMI),"red")}
       ${rrl("Available EMI for New Loan",inr(avlEMI),"big")}
