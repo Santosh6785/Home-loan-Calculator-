@@ -29,7 +29,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .screen.active{display:block}
 @keyframes fadeIn{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
 .step-title{font-size:19px;font-weight:800;color:#1E293B;margin-bottom:3px}
-.step-sub{font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.5}
+.step-sub{font-size:12px;color:#64748B;margin-bottom:18px;line-height:1.5}
 
 /* ── CARD ── */
 .card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 6px rgba(0,0,0,.08)}
@@ -42,7 +42,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .field label{display:block;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
 .field input,.field select{width:100%;padding:13px 14px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:15px;color:#1E293B;background:#fff;-webkit-appearance:none;appearance:none;outline:none;font-family:inherit}
 .field input:focus,.field select:focus{border-color:#1B3A6B;box-shadow:0 0 0 3px rgba(27,58,107,.1)}
-.field .hint{font-size:10px;color:#94A3B8;margin-top:4px;line-height:1.5}
+.field .hint{font-size:10px;color:#64748B;margin-top:4px;line-height:1.5}
 .sel-wrap{position:relative}
 .sel-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:#64748B;font-size:14px}
 
@@ -63,7 +63,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .sw-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #F1F5F9}
 .sw-row:last-child{border-bottom:none}
 .sw-row .sw-lbl{font-size:13px;color:#374151;font-weight:500;flex:1;padding-right:12px}
-.sw-row .sw-sub{font-size:10px;color:#94A3B8;margin-top:2px}
+.sw-row .sw-sub{font-size:10px;color:#64748B;margin-top:2px}
 .sw{position:relative;width:48px;height:28px;flex-shrink:0}
 .sw input{opacity:0;width:0;height:0}
 .sw .sld{position:absolute;inset:0;background:#CBD5E1;border-radius:28px;transition:.3s;cursor:pointer}
@@ -107,9 +107,9 @@ input:checked+.sld::before{transform:translateX(20px)}
 .err-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;padding:28px 20px;text-align:center;margin-bottom:14px}
 .err-box .ei{font-size:40px;margin-bottom:12px}
 .err-box p{color:#B91C1C;font-size:13px;font-weight:600;line-height:1.6}
-.disc{font-size:10px;color:#94A3B8;text-align:center;line-height:1.8;padding:0 4px 8px}
+.disc{font-size:10px;color:#64748B;text-align:center;line-height:1.8;padding:0 4px 8px}
 .ntc-note{background:#FEF3C7;border:1px solid #FDE68A;border-radius:10px;padding:10px 14px;font-size:11px;color:#92400E;line-height:1.6;margin-top:12px}
-.bsp-lbl{font-size:10px;color:#94A3B8;margin-top:4px}
+.bsp-lbl{font-size:10px;color:#64748B;margin-top:4px}
 
 /* ── REPAYMENT SCHEDULE ── */
 .chart-legend{display:flex;gap:16px;margin-bottom:10px;font-size:11px;color:#64748B}
@@ -133,10 +133,44 @@ input:checked+.sld::before{transform:translateX(20px)}
 .install-banner .ib-sub{font-size:11px;color:#BAD4FF}
 .install-banner .ib-btn{background:#D9621E;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0}
 
+/* ── TOOLTIP ── */
+.tip{position:relative;display:inline-flex;align-items:center;gap:4px}
+.tip-icon{font-size:10px;color:#64748B;background:#F1F5F9;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;cursor:help;flex-shrink:0;border:1px solid #CBD5E1;font-style:normal;line-height:1}
+.tip .tip-body{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1E293B;color:#F8FAFC;font-size:11px;line-height:1.5;padding:8px 10px;border-radius:8px;width:210px;text-align:left;z-index:500;opacity:0;pointer-events:none;transition:opacity .15s;font-weight:400;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.tip .tip-body::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1E293B}
+.tip:hover .tip-body,.tip:focus-within .tip-body{opacity:1;pointer-events:auto}
+
+/* ── CHART TOOLTIP ── */
+.chart-tip{position:fixed;background:#1E293B;color:#F8FAFC;font-size:11px;padding:7px 10px;border-radius:8px;pointer-events:none;display:none;z-index:400;line-height:1.6;min-width:150px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+
+/* ── SCHEDULE VIEW TOGGLE ── */
+.view-tog{display:flex;margin-top:10px;border-radius:8px;overflow:hidden;border:1.5px solid #E2E8F0}
+.view-tog button{flex:1;padding:8px;border:none;background:#F8FAFC;color:#64748B;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.view-tog button.act{background:#1B3A6B;color:#fff}
+#schedInner{overflow-x:auto;max-height:420px;overflow-y:auto}
+
+/* ── PREPAYMENT ── */
+.prepay-wrap{display:none;margin-top:12px}
+.savings-box{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:10px 14px;font-size:11px;color:#166534;line-height:1.7;margin-top:10px}
+
+/* ── SCENARIO COMPARE ── */
+.btn-save{width:100%;padding:12px;border:2px solid #4338CA;border-radius:12px;background:#fff;color:#4338CA;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px;text-align:center;transition:all .2s}
+.cmp-card{background:#FFFBEB;border:1px solid #FDE68A;border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.cmp-hd{font-size:11px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.cmp-close{font-size:18px;cursor:pointer;color:#B45309;background:none;border:none;padding:0 2px;line-height:1}
+.cmp-table{width:100%;border-collapse:collapse;font-size:11px}
+.cmp-table th{background:#FEF3C7;color:#92400E;font-weight:700;padding:7px 8px;text-align:center;font-size:10px;text-transform:uppercase}
+.cmp-table th:first-child{text-align:left}
+.cmp-table td{padding:6px 8px;border-bottom:1px solid #FEF3C7;text-align:center}
+.cmp-lbl{text-align:left!important;color:#78350F;font-weight:500}
+.cmp-v{font-weight:600;color:#92400E}
+.cmp-v.better{color:#059669}
+.cmp-v.worse{color:#DC2626}
+
 /* ── PRINT ── */
 @media print{
   body{background:#fff!important}
-  .topbar,.bot-nav,.btn-print,.sched-toggle,.chart-scroll,.chart-legend{display:none!important}
+  .topbar,.bot-nav,.btn-print,.sched-toggle,.chart-scroll,.chart-legend,.view-tog,.btn-save,.cmp-card,.chart-tip{display:none!important}
   .screen{display:none!important;padding:0!important}
   #s4{display:block!important;padding:10px!important}
   .hero,.card-hd{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -145,9 +179,52 @@ input:checked+.sld::before{transform:translateX(20px)}
   #schedTable{display:block!important}
   @page{margin:10mm;size:A4 portrait}
 }
+
+/* ── DARK MODE ── */
+@media(prefers-color-scheme:dark){
+  body{background:#0F172A;color:#E2E8F0}
+  .card{background:#1E293B;box-shadow:none}
+  .step-title{color:#E2E8F0}
+  .field input,.field select{background:#0F172A;border-color:#334155;color:#E2E8F0}
+  .tog-btn{background:#1E293B;border-color:#334155;color:#94A3B8}
+  .tog-btn.active{background:#172554;border-color:#3B82F6;color:#93C5FD}
+  .prod-card{background:#1E293B;border-color:#334155}
+  .prod-card.sel{background:#172554;border-color:#3B82F6}
+  .sw .sld{background:#334155}
+  .sw-row{border-bottom-color:#334155}
+  .sw-row .sw-lbl{color:#CBD5E1}
+  .bot-nav{background:#1E293B;border-top-color:#334155}
+  .btn-back{background:#1E293B;border-color:#334155;color:#94A3B8}
+  .res-row{border-bottom-color:#334155}
+  .res-row .rv{color:#E2E8F0}
+  .res-row .rv.big{color:#93C5FD}
+  .total-box{background:#1c1200;border-color:#78350F}
+  .total-box .tl,.total-box .ts,.total-box .tv{color:#FCD34D}
+  .fee-note{background:#431407;color:#FDBA74}
+  .prod-note{background:#1e3a5f;color:#93C5FD}
+  .mor-note{background:#052E16;color:#86EFAC;border-color:#166534}
+  .sched-toggle{background:#1E293B;border-color:#334155;color:#94A3B8}
+  .view-tog{border-color:#334155}
+  .view-tog button{background:#1E293B;color:#94A3B8}
+  .view-tog button.act{background:#1B3A6B;color:#fff}
+  .sched-table th{background:#0F172A;color:#94A3B8;border-bottom-color:#334155}
+  .sched-table td{border-bottom-color:#334155;color:#CBD5E1}
+  .sched-table tr.total-row td{background:#1e3a5f;border-top-color:#3B82F6;color:#93C5FD}
+  .savings-box{background:#052E16;border-color:#166534;color:#86EFAC}
+  .cmp-card{background:#1E293B;border-color:#334155}
+  .cmp-hd{color:#FCD34D}
+  .btn-save{background:#1E293B;border-color:#6366F1;color:#A5B4FC}
+  .tip-icon{background:#1E293B;border-color:#334155;color:#94A3B8}
+  .err-box{background:#2D0A0A;border-color:#7F1D1D}
+  .err-box p{color:#FCA5A5}
+  .ntc-note{background:#1c1200;border-color:#78350F;color:#FCD34D}
+}
 </style>
 </head>
 <body>
+
+<!-- Chart hover tooltip -->
+<div class="chart-tip" id="cTip"></div>
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -172,7 +249,8 @@ input:checked+.sld::before{transform:translateX(20px)}
       <div class="pi">🏠</div><div class="pn">Home Loan</div>
     </div>
     <div class="prod-card" id="pc_plap" onclick="selProd('plap',this)">
-      <div class="pi">🔑</div><div class="pn">PLAP</div>
+      <div class="pi">🔑</div>
+      <div class="pn"><span class="tip">PLAP<span tabindex="0" class="tip-icon">ⓘ</span><span class="tip-body">Plot + Construction Loan — funds both land purchase and construction in one facility. Higher ROI than standard Home Loan.</span></span></div>
     </div>
     <div class="prod-card" id="pc_topup5" onclick="selProd('topup5',this)">
       <div class="pi">💰</div><div class="pn">Top Up ≤ 5 Cr</div>
@@ -189,7 +267,7 @@ input:checked+.sld::before{transform:translateX(20px)}
   </div>
 
   <div class="card">
-    <div class="card-hd" style="background:#D9621E">⚙️ Loan Variant / BSP Sub-Type</div>
+    <div class="card-hd" style="background:#D9621E"><span class="tip" style="color:#fff">⚙️ Loan Variant / BSP Sub-Type<span tabindex="0" class="tip-icon" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff">ⓘ</span><span class="tip-body">BSP (Base Spread Premium) is an interest rate add-on for certain product variants, applied over the base ROI from your CIBIL slab.</span></span></div>
     <div class="card-bd">
       <div class="field" style="margin-bottom:0">
         <label>Select Variant</label>
@@ -235,7 +313,7 @@ input:checked+.sld::before{transform:translateX(20px)}
     <div class="card-hd" style="background:#1B3A6B">📊 CIBIL / Credit Score</div>
     <div class="card-bd">
       <div class="sw-row">
-        <div><div class="sw-lbl">New to Credit (NTC)</div><div class="sw-sub">No CIBIL score available</div></div>
+        <div><div class="sw-lbl"><span class="tip">New to Credit (NTC)<span tabindex="0" class="tip-icon">ⓘ</span><span class="tip-body">NTC applies to borrowers with no prior credit history. Bank policy restricts NTC eligibility to NRI customers and Category I Top-Up loans only.</span></span></div><div class="sw-sub">No CIBIL score available</div></div>
         <label class="sw"><input type="checkbox" id="ntcChk" onchange="toggleNTC()"><span class="sld"></span></label>
       </div>
       <div id="cibilBlk" style="margin-top:14px">
@@ -293,10 +371,24 @@ input:checked+.sld::before{transform:translateX(20px)}
         <input type="number" id="tenureInp" value="20" min="1" max="30" inputmode="numeric">
         <p class="hint">Max 30 years or till applicant reaches age 70</p>
       </div>
-      <div class="field" style="margin-bottom:0">
+      <div class="field">
         <label>Existing EMI Obligations (₹ / month)</label>
         <input type="number" id="emiInp" value="0" min="0" step="1000" inputmode="numeric">
         <p class="hint">Enter total of all active running loan EMIs (home, car, personal, etc.)</p>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <div class="sw-row" style="padding-top:0;border-bottom:none">
+          <div>
+            <div class="sw-lbl">Annual Prepayment</div>
+            <div class="sw-sub">Optional lump-sum payment each year to reduce interest</div>
+          </div>
+          <label class="sw"><input type="checkbox" id="prepayChk" onchange="togglePrepay()"><span class="sld"></span></label>
+        </div>
+        <div class="prepay-wrap" id="prepayWrap">
+          <label>Annual Prepayment Amount (₹)</label>
+          <input type="number" id="prepayInp" value="100000" min="0" step="10000" inputmode="numeric">
+          <p class="hint">Extra principal paid each year — reduces total interest &amp; may shorten tenure</p>
+        </div>
       </div>
     </div>
   </div>
@@ -359,7 +451,7 @@ input:checked+.sld::before{transform:translateX(20px)}
 
 <!-- ═══ STEP 4: RESULTS ═══ -->
 <div class="screen" id="s4">
-  <div id="resArea"></div>
+  <div id="resArea" role="region" aria-live="polite" aria-label="Loan eligibility results"></div>
 </div>
 
 <!-- BOTTOM NAVIGATION -->
@@ -380,6 +472,8 @@ const ROI={
 const PNAMES={homeLoan:"Home Loan",plap:"PLAP",topup5:"Top Up ≤ 5 Cr",topup5p:"Top Up > 5 Cr",realityHL:"Reality Home Loan",comboHL:"Combo Home Loan"};
 
 let step=1, prod='homeLoan', emp='salaried', morInterestRepay=true;
+let _schedMonthly=false, _amortCache=null, _lastCalcResult=null, _savedScenario=null;
+try{const s=localStorage.getItem('hlc_s');if(s)_savedScenario=JSON.parse(s);}catch(e){}
 
 function getRoi(p,ntc,cat,cibil){
   const t=ROI[p];
@@ -424,6 +518,7 @@ function toggleNTC(){
 }
 function toggleCoApp(){ v('coBlk').style.display=chk('coChk')?'block':'none'; }
 function toggleMor(){ v('morBlk').style.display=chk('morChk')?'block':'none'; }
+function togglePrepay(){ v('prepayWrap').style.display=chk('prepayChk')?'block':'none'; }
 function setMorInt(val){
   morInterestRepay=val;
   v('morIntYes').classList.toggle('active',val);
@@ -434,7 +529,22 @@ function toggleSchedule(){
   if(!tbl)return;
   const show=tbl.style.display==='none';
   tbl.style.display=show?'block':'none';
-  btn.textContent=show?'📋 Hide Full Schedule ▴':'📋 View Full Year-by-Year Schedule ▾';
+  btn.textContent=show?'📋 Hide Full Schedule ▴':'📋 View Full Schedule ▾';
+  btn.setAttribute('aria-expanded',show?'true':'false');
+  if(show) viewSched(_schedMonthly);
+}
+
+function viewSched(mo){
+  _schedMonthly=mo;
+  const yBtn=v('sViewY'), mBtn=v('sViewM');
+  if(yBtn){yBtn.classList.toggle('act',!mo);yBtn.setAttribute('aria-pressed',!mo);mBtn.classList.toggle('act',mo);mBtn.setAttribute('aria-pressed',mo);}
+  const inner=v('schedInner');
+  if(!inner||!_amortCache)return;
+  const rows=mo?[..._amortCache.rows.filter(r=>r.isMor),..._amortCache.monthly]:_amortCache.rows;
+  inner.innerHTML='<table class="sched-table"><thead><tr><th>Period</th><th>Opening</th><th>Principal</th><th>Interest</th><th>Closing</th></tr></thead><tbody>'+
+    rows.map(r=>'<tr class="'+(r.isMor?'mor-row':'')+'"><td>'+r.period+'</td><td>'+lacStr(r.opening)+'</td><td>'+(r.isMor&&!r.isCap?'—':lacStr(r.principal))+'</td><td>'+lacStr(r.interest)+'</td><td>'+lacStr(r.closing)+'</td></tr>').join('')+
+    '<tr class="total-row"><td>TOTAL</td><td>—</td><td>'+lacStr(_amortCache.principal)+'</td><td>'+lacStr(_amortCache.totalInt)+'</td><td>₹ 0</td></tr>'+
+    '</tbody></table>';
 }
 
 function goNext(){
@@ -472,10 +582,11 @@ function showStep(n){
 }
 
 /* ── AMORTIZATION ENGINE ── */
-function buildAmort(principal,roi,tenureMonths,morMo,morPayInt){
+function buildAmort(principal,roi,tenureMonths,morMo,morPayInt,prepay){
+  prepay=prepay||0;
   const r=roi/1200;
   let bal=principal;
-  const rows=[];
+  const rows=[], monthly=[];
   let totalInt=0;
 
   if(morMo>0){
@@ -492,22 +603,54 @@ function buildAmort(principal,roi,tenureMonths,morMo,morPayInt){
     }
   }
 
-  if(tenureMonths<=0||bal<1){return{rows,totalInt,totalCost:principal+totalInt};}
+  if(tenureMonths<=0||bal<1){return{rows,monthly,principal,totalInt,totalCost:principal+totalInt,actualMonths:0};}
   const emi=bal*r*Math.pow(1+r,tenureMonths)/(Math.pow(1+r,tenureMonths)-1);
-  let yo=bal, yp=0, yi=0, yr=1;
+  let yo=bal, yp=0, yi=0, yr=1, actualMonths=0;
 
-  for(let m=1;m<=tenureMonths;m++){
+  for(let m=1;m<=tenureMonths&&bal>0.5;m++){
+    const mOpen=bal;
     const ip=bal*r;
     const pp=Math.min(emi-ip,bal);
     bal=Math.max(0,bal-pp);
-    yp+=pp; yi+=ip; totalInt+=ip;
-    if(m%12===0||m===tenureMonths){
+    let pAmnt=0;
+    if(prepay>0&&m%12===0&&bal>0.5){pAmnt=Math.min(prepay,bal);bal=Math.max(0,bal-pAmnt);}
+    yp+=pp+pAmnt; yi+=ip; totalInt+=ip; actualMonths++;
+    const mo=m%12||12, mYr=Math.ceil(m/12);
+    monthly.push({period:'Yr'+mYr+' M'+(mo<10?'0':'')+mo,opening:mOpen,principal:pp+pAmnt,interest:ip,closing:bal,isMor:false});
+    if(m%12===0||m===tenureMonths||bal<0.5){
       rows.push({period:'Year '+yr,opening:yo,principal:yp,interest:yi,closing:bal,isMor:false});
       yo=bal; yp=0; yi=0; yr++;
     }
   }
-  return{rows,totalInt,totalCost:principal+totalInt};
+  return{rows,monthly,principal,totalInt,totalCost:principal+totalInt,actualMonths};
 }
+
+/* ── CHART TOOLTIP ── */
+let _chartRows=[], _chartPAD={t:14,r:8,b:28,l:46}, _chartSlotW=0, _chartBW=0;
+
+function _chartHit(e,canvas,type){
+  const rect=canvas.getBoundingClientRect();
+  const clientX=type==='touch'?e.touches[0].clientX:e.clientX;
+  const px=(clientX-rect.left)*(canvas.width/rect.width);
+  const PAD=_chartPAD;
+  for(let i=0;i<_chartRows.length;i++){
+    const x=PAD.l+i*_chartSlotW+(_chartSlotW-_chartBW)/2;
+    if(px>=x&&px<=x+_chartBW){
+      const d=_chartRows[i];
+      const tip=v('cTip');
+      if(!tip)return;
+      tip.innerHTML='<strong>'+d.period+'</strong><br>Principal: '+inr(d.principal)+'<br>Interest: '+inr(d.interest);
+      tip.style.display='block';
+      const tipH=tip.getBoundingClientRect().height||55;
+      const barCX=rect.left+(x+_chartBW/2)/(canvas.width/rect.width);
+      tip.style.left=Math.max(8,Math.min(barCX-75,window.innerWidth-160))+'px';
+      tip.style.top=Math.max(8,rect.top-tipH-12)+'px';
+      return;
+    }
+  }
+  _hideTip();
+}
+function _hideTip(){const t=v('cTip');if(t)t.style.display='none';}
 
 /* ── CHART ── */
 function drawChart(rows){
@@ -528,7 +671,7 @@ function drawChart(rows){
     const y=PAD.t+cH-(i/4)*cH;
     ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
     const val=(i/4)*maxY;
-    ctx.fillStyle='#94A3B8'; ctx.font='9px sans-serif'; ctx.textAlign='right';
+    ctx.fillStyle='#64748B'; ctx.font='9px sans-serif'; ctx.textAlign='right';
     const lbl=val>=1e7?(val/1e7).toFixed(1)+'Cr':val>=1e5?(val/1e5).toFixed(0)+'L':'0';
     ctx.fillText(lbl,PAD.l-3,y+3);
   }
@@ -546,6 +689,12 @@ function drawChart(rows){
     ctx.fillStyle='#64748B'; ctx.font='8px sans-serif'; ctx.textAlign='center';
     ctx.fillText(lbl,x+bW/2,H-PAD.b+11);
   });
+
+  _chartRows=rows; _chartSlotW=slotW; _chartBW=bW;
+  canvas.onmousemove=function(e){_chartHit(e,canvas,'mouse');};
+  canvas.ontouchstart=function(e){e.preventDefault();_chartHit(e,canvas,'touch');};
+  canvas.onmouseleave=_hideTip;
+  canvas.ontouchend=function(){setTimeout(_hideTip,1500);};
 }
 
 /* ── MAIN CALC ── */
@@ -560,6 +709,7 @@ function calc(){
   const tenure=iv('tenureInp');
   const exEMI =fv('emiInp');
   const isSal =emp==='salaried';
+  const prepay=chk('prepayChk')?fv('prepayInp'):0;
 
   const hasMor =chk('morChk');
   const morMo  =hasMor?Math.max(1,Math.min(36,iv('morMonths'))):0;
@@ -622,10 +772,16 @@ function calc(){
   const nriCh =(nri&&appAmt>=5e6)?9500*1.18:0;
   const total =pFee+gst+nriCh+118;
 
-  const amort =buildAmort(appAmt,finalR,effT*12,morMo,morPayInt);
+  const amort=buildAmort(appAmt,finalR,effT*12,morMo,morPayInt,prepay);
+  _amortCache={...amort,principal:appAmt};
+  _schedMonthly=false;
   const preEmiTotal=hasMor&&morMo>0&&morPayInt?preEmiMo*morMo:0;
   const grandTotalInt=amort.totalInt;
   const grandCost=appAmt+grandTotalInt;
+  const amortNoPrepay=prepay>0?buildAmort(appAmt,finalR,effT*12,morMo,morPayInt,0):null;
+  const intSaved=amortNoPrepay?Math.max(0,amortNoPrepay.totalInt-grandTotalInt):0;
+  const monthsSaved=amortNoPrepay&&amort.actualMonths>0?Math.max(0,effT*12-amort.actualMonths):0;
+  _lastCalcResult={prod,eligAmt,emi,finalR,grandTotalInt,grandCost,effT,incLac,ratio,appAmt,prepay};
 
   const heroGrad=full?'linear-gradient(135deg,#1B3A6B,#1D4ED8)':'linear-gradient(135deg,#7C2D12,#C2410C)';
   const statusLine=full?'✅ Fully eligible for your desired amount':`⚠️ Desired: ${inr(desAmt)} | Shortfall: ${inr(desAmt-eligAmt)}`;
@@ -634,15 +790,6 @@ function calc(){
     realityHL:'<div class="prod-note">ℹ️ <strong>Reality Home Loan</strong> is for purchase of residential plot/land. Construction must commence within 2 years of land purchase. Max tenure and LTV may differ from standard HL — verify with bank policy.</div>',
     comboHL:'<div class="prod-note">ℹ️ <strong>Combo Home Loan</strong> combines a term home loan with an overdraft facility. The credit limit is typically linked to the outstanding principal. Subject to individual bank sanction norms.</div>'
   };
-
-  const tableRows=amort.rows.map(r=>`
-    <tr class="${r.isMor?'mor-row':''}">
-      <td>${r.period}</td>
-      <td>${lacStr(r.opening)}</td>
-      <td>${r.isMor&&!r.isCap?'—':lacStr(r.principal)}</td>
-      <td>${lacStr(r.interest)}</td>
-      <td>${lacStr(r.closing)}</td>
-    </tr>`).join('');
 
   area.innerHTML=`
   <div class="hero" style="background:${heroGrad}">
@@ -655,6 +802,9 @@ function calc(){
       <div class="h-stat"><div class="sl">Tenure</div><div class="sv">${effT} Yrs</div></div>
     </div>
   </div>
+
+  <div id="cmpWrap"></div>
+  <button class="btn-save" id="btnSave" onclick="saveScenario()">💾 Save Scenario</button>
 
   ${prodNotes[prod]||''}
 
@@ -724,33 +874,23 @@ function calc(){
       ${rr("Total EMI Interest ("+effT+" Yrs)",inr(amort.totalInt-(hasMor&&morMo>0&&morPayInt?preEmiTotal:0)),"acc")}
       ${rrl("Grand Total Loan Cost",inr(grandCost),"big")}
 
+      ${prepay>0&&intSaved>0?`<div class="savings-box">💡 <strong>Prepayment Benefit:</strong> With ₹${(prepay/1e5).toFixed(1)}L annual prepayment, you save <strong>${inr(intSaved)}</strong> in interest${monthsSaved>0?' and close the loan <strong>'+monthsSaved+' months early</strong>':''}.</div>`:''}
+
       <div class="chart-legend" style="margin-top:14px">
         <span><span class="dot" style="background:#1B3A6B"></span>Principal</span>
         <span><span class="dot" style="background:#F97316"></span>Interest</span>
       </div>
       <div class="chart-scroll">
-        <canvas id="repayChart" height="180" style="display:block"></canvas>
+        <canvas id="repayChart" height="180" style="display:block" aria-label="Repayment schedule bar chart showing principal and interest by year"></canvas>
       </div>
 
-      <button class="sched-toggle" id="schedBtn" onclick="toggleSchedule()">📋 View Full Year-by-Year Schedule ▾</button>
-      <div id="schedTable" style="display:none;overflow-x:auto">
-        <table class="sched-table">
-          <thead>
-            <tr>
-              <th>Period</th><th>Opening</th><th>Principal</th><th>Interest</th><th>Closing</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${tableRows}
-            <tr class="total-row">
-              <td>TOTAL</td>
-              <td>—</td>
-              <td>${lacStr(appAmt)}</td>
-              <td>${lacStr(grandTotalInt)}</td>
-              <td>₹ 0</td>
-            </tr>
-          </tbody>
-        </table>
+      <button class="sched-toggle" id="schedBtn" onclick="toggleSchedule()" aria-expanded="false">📋 View Full Schedule ▾</button>
+      <div id="schedTable" style="display:none">
+        <div class="view-tog">
+          <button id="sViewY" class="act" onclick="viewSched(false)" aria-pressed="true">Yearly</button>
+          <button id="sViewM" onclick="viewSched(true)" aria-pressed="false">Monthly</button>
+        </div>
+        <div id="schedInner"></div>
       </div>
     </div>
   </div>
@@ -767,6 +907,48 @@ function calc(){
     canvas.width=Math.max(200,Math.max(amort.rows.length*28,window.innerWidth-64));
     drawChart(amort.rows);
   }
+
+  if(_savedScenario){
+    const cmpWrap=v('cmpWrap');
+    if(cmpWrap)cmpWrap.innerHTML=buildCompareCard(_lastCalcResult,_savedScenario);
+    const btn=v('btnSave');
+    if(btn){btn.textContent='✅ Saved — Tap to Update';btn.style.borderColor='#059669';btn.style.color='#059669';}
+  }
+}
+
+/* ── SCENARIO COMPARE ── */
+function saveScenario(){
+  if(!_lastCalcResult)return;
+  _savedScenario={..._lastCalcResult};
+  try{localStorage.setItem('hlc_s',JSON.stringify(_savedScenario));}catch(e){}
+  const btn=v('btnSave');
+  if(btn){btn.textContent='✅ Saved — Tap to Update';btn.style.borderColor='#059669';btn.style.color='#059669';}
+  const cmpWrap=v('cmpWrap');
+  if(cmpWrap)cmpWrap.innerHTML=buildCompareCard(_lastCalcResult,_savedScenario);
+}
+
+function clearScenario(){
+  _savedScenario=null;
+  try{localStorage.removeItem('hlc_s');}catch(e){}
+  const cmpWrap=v('cmpWrap');
+  if(cmpWrap)cmpWrap.innerHTML='';
+  const btn=v('btnSave');
+  if(btn){btn.textContent='💾 Save Scenario';btn.style.borderColor='';btn.style.color='';}
+}
+
+function buildCompareCard(curr,saved){
+  if(!saved||!curr)return'';
+  const rows=[
+    {l:'Product',cv:PNAMES[curr.prod]||curr.prod,sv:PNAMES[saved.prod]||saved.prod,b:''},
+    {l:'Eligible Amt',cv:inr(curr.eligAmt),sv:inr(saved.eligAmt),b:curr.eligAmt>saved.eligAmt?'c':curr.eligAmt<saved.eligAmt?'s':''},
+    {l:'Monthly EMI',cv:inr(curr.emi),sv:inr(saved.emi),b:curr.emi<saved.emi?'c':curr.emi>saved.emi?'s':''},
+    {l:'Final ROI',cv:curr.finalR.toFixed(2)+'%',sv:saved.finalR.toFixed(2)+'%',b:curr.finalR<saved.finalR?'c':curr.finalR>saved.finalR?'s':''},
+    {l:'Total Interest',cv:inr(curr.grandTotalInt),sv:inr(saved.grandTotalInt),b:curr.grandTotalInt<saved.grandTotalInt?'c':curr.grandTotalInt>saved.grandTotalInt?'s':''},
+    {l:'Total Cost',cv:inr(curr.grandCost),sv:inr(saved.grandCost),b:curr.grandCost<saved.grandCost?'c':curr.grandCost>saved.grandCost?'s':''},
+    {l:'Tenure',cv:curr.effT+' Yrs',sv:saved.effT+' Yrs',b:''},
+  ];
+  const rowHtml=rows.map(r=>'<tr><td class="cmp-lbl">'+r.l+'</td><td class="cmp-v '+(r.b==='c'?'better':r.b==='s'?'worse':'')+'">'+r.cv+'</td><td class="cmp-v '+(r.b==='s'?'better':r.b==='c'?'worse':'')+'">'+r.sv+'</td></tr>').join('');
+  return'<div class="cmp-card"><div class="cmp-hd"><span>📊 Scenario Comparison</span><button class="cmp-close" onclick="clearScenario()">✕</button></div><table class="cmp-table"><thead><tr><th></th><th>Current</th><th>Saved</th></tr></thead><tbody>'+rowHtml+'</tbody></table></div>';
 }
 
 function rr(l,val,cls=''){return`<div class="res-row"><span class="rl">${l}</span><span class="rv ${cls}">${val}</span></div>`;}
@@ -774,7 +956,13 @@ function rrl(l,val,cls=''){return`<div class="res-row" style="border:none"><span
 function err(msg){return`<div class="err-box"><div class="ei">⚠️</div><p>${msg}</p></div>`;}
 
 if('serviceWorker'in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+  const hadController=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('message',e=>{
+    if(e.data&&e.data.type==='SW_UPDATED'&&hadController)window.location.reload();
+  });
+  window.addEventListener('load',()=>
+    navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{})
+  );
 }
 </script>
 </body>
