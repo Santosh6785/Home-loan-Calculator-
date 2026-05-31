@@ -956,7 +956,13 @@ function rrl(l,val,cls=''){return`<div class="res-row" style="border:none"><span
 function err(msg){return`<div class="err-box"><div class="ei">⚠️</div><p>${msg}</p></div>`;}
 
 if('serviceWorker'in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+  const hadController=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('message',e=>{
+    if(e.data&&e.data.type==='SW_UPDATED'&&hadController)window.location.reload();
+  });
+  window.addEventListener('load',()=>
+    navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{})
+  );
 }
 </script>
 </body>
