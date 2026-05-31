@@ -133,6 +133,15 @@ input:checked+.sld::before{transform:translateX(20px)}
 .install-banner .ib-sub{font-size:11px;color:#BAD4FF}
 .install-banner .ib-btn{background:#D9621E;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0}
 
+/* ── CO-APPLICANT ITEMS ── */
+.co-item{background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:14px;margin-bottom:10px}
+.co-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.co-num{font-size:11px;font-weight:700;color:#4338CA;text-transform:uppercase;letter-spacing:.06em}
+.co-del{background:#FEF2F2;border:1px solid #FECACA;border-radius:6px;color:#DC2626;font-size:12px;cursor:pointer;padding:4px 10px;font-family:inherit;font-weight:700;line-height:1}
+.btn-add-co{width:100%;padding:11px;border:2px dashed #CBD5E1;border-radius:10px;background:#F8FAFC;color:#64748B;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px;transition:all .2s}
+.btn-add-co:active{border-color:#4338CA;color:#4338CA;background:#EEF2FF}
+.co-empty{text-align:center;padding:10px 0 6px;font-size:12px;color:#94A3B8}
+
 /* ── TOOLTIP ── */
 .tip{position:relative;display:inline-flex;align-items:center;gap:4px}
 .tip-icon{font-size:10px;color:#64748B;background:#F1F5F9;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;cursor:help;flex-shrink:0;border:1px solid #CBD5E1;font-style:normal;line-height:1}
@@ -214,6 +223,9 @@ input:checked+.sld::before{transform:translateX(20px)}
   .cmp-card{background:#1E293B;border-color:#334155}
   .cmp-hd{color:#FCD34D}
   .btn-save{background:#1E293B;border-color:#6366F1;color:#A5B4FC}
+  .co-item{background:#0F172A;border-color:#334155}
+  .co-del{background:#2D0A0A;border-color:#7F1D1D;color:#FCA5A5}
+  .btn-add-co{background:#1E293B;border-color:#334155;color:#94A3B8}
   .tip-icon{background:#1E293B;border-color:#334155;color:#94A3B8}
   .err-box{background:#2D0A0A;border-color:#7F1D1D}
   .err-box p{color:#FCA5A5}
@@ -426,25 +438,12 @@ input:checked+.sld::before{transform:translateX(20px)}
   </div>
 
   <div class="card">
-    <div class="card-hd" style="background:#4338CA">👥 Co-Applicant</div>
+    <div class="card-hd" style="background:#4338CA">👥 Co-Applicants <span id="coCountBadge" style="font-weight:400;opacity:.8"></span></div>
     <div class="card-bd">
-      <div class="sw-row">
-        <div>
-          <div class="sw-lbl">Add Co-Applicant</div>
-          <div class="sw-sub">Combines income to increase loan eligibility</div>
-        </div>
-        <label class="sw"><input type="checkbox" id="coChk" onchange="toggleCoApp()"><span class="sld"></span></label>
-      </div>
-      <div id="coBlk" style="display:none;margin-top:16px">
-        <div class="field">
-          <label>Co-Applicant Age (Years)</label>
-          <input type="number" id="coAgeInp" value="30" min="18" max="70" inputmode="numeric">
-        </div>
-        <div class="field" style="margin-bottom:0">
-          <label>Annual Income — Co-Applicant (₹)</label>
-          <input type="number" id="coIncInp" value="0" min="0" step="10000" inputmode="numeric">
-        </div>
-      </div>
+      <p class="hint" style="margin-bottom:12px">Add up to 3 co-applicants — their incomes are combined with the primary applicant to increase eligibility</p>
+      <div id="coList"></div>
+      <p class="co-empty" id="coEmpty">No co-applicants added</p>
+      <button class="btn-add-co" id="btnAddCo" onclick="addCoApp()">＋ Add Co-Applicant</button>
     </div>
   </div>
 </div>
@@ -516,7 +515,39 @@ function toggleNTC(){
   v('cibilBlk').style.display=on?'none':'block';
   v('ntcBlk').style.display=on?'block':'none';
 }
-function toggleCoApp(){ v('coBlk').style.display=chk('coChk')?'block':'none'; }
+const MAX_CO=3;
+let coApps=[];
+function addCoApp(){
+  if(coApps.length>=MAX_CO)return;
+  coApps.push({age:30,inc:0});
+  renderCoApps();
+}
+function removeCoApp(i){
+  coApps.splice(i,1);
+  renderCoApps();
+}
+function renderCoApps(){
+  const list=v('coList'), empty=v('coEmpty'), btn=v('btnAddCo'), badge=v('coCountBadge');
+  if(!list)return;
+  list.innerHTML=coApps.map((co,i)=>`
+    <div class="co-item">
+      <div class="co-hd">
+        <span class="co-num">Co-Applicant ${i+1}</span>
+        <button class="co-del" onclick="removeCoApp(${i})" aria-label="Remove co-applicant ${i+1}">✕ Remove</button>
+      </div>
+      <div class="field">
+        <label>Age (Years)</label>
+        <input type="number" id="coAge${i}" value="${co.age}" min="18" max="70" inputmode="numeric">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Annual Income (₹)</label>
+        <input type="number" id="coInc${i}" value="${co.inc}" min="0" step="10000" inputmode="numeric" placeholder="e.g. 600000">
+      </div>
+    </div>`).join('');
+  if(empty)empty.style.display=coApps.length?'none':'block';
+  if(btn)btn.style.display=coApps.length>=MAX_CO?'none':'block';
+  if(badge)badge.textContent=coApps.length?'('+coApps.length+')':'';
+}
 function toggleMor(){ v('morBlk').style.display=chk('morChk')?'block':'none'; }
 function togglePrepay(){ v('prepayWrap').style.display=chk('prepayChk')?'block':'none'; }
 function setMorInt(val){
@@ -703,7 +734,8 @@ function calc(){
   const isNTC =chk('ntcChk');
   const ntcCat=v('ntcCatSel').value;
   const cibil =v('cibilInp').value;
-  const totInc=fv('incInp')+(chk('coChk')?fv('coIncInp'):0);
+  let totInc=fv('incInp');
+  for(let i=0;i<coApps.length;i++){const el=v('coInc'+i);if(el)totInc+=parseFloat(el.value)||0;}
   const nri   =chk('nriChk');
   const desAmt=fv('loanInp');
   const tenure=iv('tenureInp');
@@ -954,6 +986,8 @@ function buildCompareCard(curr,saved){
 function rr(l,val,cls=''){return`<div class="res-row"><span class="rl">${l}</span><span class="rv ${cls}">${val}</span></div>`;}
 function rrl(l,val,cls=''){return`<div class="res-row" style="border:none"><span class="rl">${l}</span><span class="rv ${cls}">${val}</span></div>`;}
 function err(msg){return`<div class="err-box"><div class="ei">⚠️</div><p>${msg}</p></div>`;}
+
+renderCoApps();
 
 if('serviceWorker'in navigator){
   const hadController=!!navigator.serviceWorker.controller;
